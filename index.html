@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" 
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="description" content="Using NASA's Earth API to display recent satellite imagery of your current city">
+    <meta name="keywords" content="NASA, Earth, View, JavaScript">
+    <meta name="author" content="Connor Zacharias">
+    <title>What Does it Look Like Where I Am?</title>
+    <style>
+        p, h1 {
+            color: green;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        .imgbox {
+            display: grid;
+            height: 100%;
+        }
+        .center-fit {
+            max-width: 100%;
+            max-height: 100vh;
+            margin: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <center>
+        <p id="loading placeholder">loading...</p>
+        <div class="imgbox">
+            <img id="city-view" class="center-fit" src=''>
+        </div>
+    </center>
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function() {
+            fetch("https://api.ipify.org?format=json")
+                .then(response => response.json())
+                .then(data => {
+                    const ip = data.ip;
+                    fetch(`https://api.geoapify.com/v1/ipinfo?ip=${ip}&apiKey=afe3e651ae3d458e88aeccb8f34f77dc`)
+                        .then(res => res.json())
+                        .then(data => {
+                            const name = data.city.name;
+                            fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${name}&limit=1&appid=ed5facf7209c0bd5b2317f406a6f9560`)
+                                .then(res => res.json())
+                                .then(data => {
+                                    return data[0];
+                                })
+                                .then(coords => {
+                                    var year = new Date().getFullYear();
+                                    const imageUrl = `https://api.nasa.gov/planetary/earth/imagery?lon=${coords.lon}&lat=${coords.lat}&date=${year}-01-01&dim=0.15&api_key=jeGQgs4QLyLWXs3UN8RjIUbTd9pWJtgAymdzLnnX`;
+                                    fetch(imageUrl)
+                                        .then(res => res.blob())
+                                        .then(data => {
+                                            const imageObjectURL = URL.createObjectURL(data);
+                                            document.getElementById("loading placeholder").remove();
+                                            document.getElementById("city-view").src = imageObjectURL;
+                                        });
+                                });
+                        });
+                })
+                .catch(error => {
+                    console.error("Error fetching IP address:", error);
+                });
+        });
+    </script>
+</body>
+
+</html>
