@@ -1,8 +1,8 @@
 # WDILLWIA
-##What Does It Look Like Where I Am? A simple Nasa satilite imagery viewer.
+## What Does It Look Like Where I Am? A simple Nasa satilite imagery viewer.
 WDILLWIA gets the latitude and longitude of the city you're currently in, and displays an image taken in january of your year from Nasa's EARTH api
 
-##Example Images:
-![alt text](https://ibb.co/7tWt7Zb)
+## Example Images:
+![alt text](https://i.ibb.co/KxqxCfm/Screenshot-2024-12-16-at-2-00-13-PM.png)
 
 (images sometimes may seem incomplete or blank, this is unfortunately out of my control, and is a result of nasa's imagery techniques or cloud cover on the day the image was taken)
